@@ -1,7 +1,7 @@
 import streamlit as st
-import plotly.express as px
+import pandas as pd
 
-# Dados simples para o gráfico
+# Dados simples para exibir
 data = {
     'Fruit': ['Apples', 'Oranges', 'Bananas', 'Grapes'],
     'Amount': [10, 15, 7, 12]
@@ -10,11 +10,9 @@ data = {
 # Criação do DataFrame
 df = pd.DataFrame(data)
 
-# Criação do gráfico de barras
-fig = px.bar(df, x='Fruit', y='Amount', title='Quantidade de Frutas')
-
 # Layout da aplicação Streamlit
-st.title('Teste Simples de Streamlit com Plotly')
-st.plotly_chart(fig)
+st.title('Teste Simples de Streamlit sem Plotly')
+st.write("Tabela de Dados:")
+st.dataframe(df)
 
 st.write("Aplicação executada com sucesso!")

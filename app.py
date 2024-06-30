@@ -1,22 +1,10 @@
+
 import pandas as pd
-import dash
-from dash import dcc, html
+import streamlit as st
 import plotly.express as px
 import plotly.graph_objs as go
 import plotly.io as pio
-import os
-from flask import Flask
-from github import Github
 
-server = Flask(__name__)
-app = dash.Dash(__name__, server=server)
-
-# Definir o tema padrão para plotly
-pio.templates.default = "plotly_dark"
-
-# Carregar o arquivo Excel
-file_path = os.path.join(os.path.dirname(__file__), 'estagioo.xlsx')
-df = pd.read_excel(file_path)
 # Definir o tema padrão para plotly
 pio.templates.default = "plotly_dark"
 
@@ -196,60 +184,42 @@ fig_carga_horaria = px.bar(carga_horaria_ranking, x='CARGA_HORARIA', y='COUNT',
                            title='Distribuição de Carga Horária')
 fig_carga_horaria.update_layout(title_x=0.5, font=dict(size=18, family='Arial, sans-serif', color='white'))
 
-# Inicializar a aplicação Dash
-app = dash.Dash(__name__)
+# Iniciar a aplicação Streamlit
+st.set_page_config(page_title="Dashpy", layout="wide")
 
-# CSS customizado
-app.css.append_css({
-    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
-})
+st.title("Dashboard de Visualização da Tabela de Estágios Não Obrigatórios")
 
-# Layout da aplicação com CSS para melhor estética
-app.layout = html.Div(className='dashboard-container', children=[
-    html.H1(children='Dashboard de Visualização da Tabela de Estágios Não Obrigatórios', style={'text-align': 'center', 'color': '#FFFFFF', 'font-family': 'Arial, sans-serif', 'font-size': '32px'}),
-    html.Div(children=[
-        html.Div(children=[
-            dcc.Graph(id='gender-pie-chart', figure=fig_pie, className='graph-container')
-        ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-        html.Div(children=[
-            dcc.Graph(id='age-gender-pyramid', figure=fig_pyramid, className='graph-container')
-        ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-    ]),
-    html.Div(children=[
-        dcc.Graph(id='rmr-bar-chart', figure=fig_rmr, className='graph-container')
-    ], style={'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-    html.Div(children=[
-        html.Div(children=[
-            dcc.Graph(id='initiative-pie-chart', figure=fig_initiative_pie, className='graph-container')
-        ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-        html.Div(children=[
-            dcc.Graph(id='convenio-pie-chart', figure=fig_convenio_pie, className='graph-container')
-        ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-    ]),
-    html.Div(children=[
-        html.Div(children=[
-            dcc.Graph(id='top-5-agentes-bar-chart', figure=fig_top_5_agentes, className='graph-container')
-        ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-        html.Div(children=[
-            dcc.Graph(id='carga-horaria-ranking', figure=fig_carga_horaria, className='graph-container')
-        ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px'}),
-    ]),
-    html.Div(children=[
-        html.Div(children=[
-            html.P(children='Média das Idades:', style={'font-weight': 'bold', 'text-align': 'center', 'color': '#FFFFFF', 'font-size': '20px'}),
-            html.P(children=f'{media_idades:.2f} anos', style={'font-size': '24px', 'color': '#4CAF50', 'text-align': 'center'})
-        ], className='stat-box', style={'width': '30%', 'display': 'inline-block', 'padding': '20px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px', 'margin': '10px'}),
-        html.Div(children=[
-            html.P(children='Média do Tempo em Meses:', style={'font-weight': 'bold', 'text-align': 'center', 'color': '#FFFFFF', 'font-size': '20px'}),
-            html.P(children=f'{media_tempo_meses:.2f} meses', style={'font-size': '24px', 'color': '#2196F3', 'text-align': 'center'})
-        ], className='stat-box', style={'width': '30%', 'display': 'inline-block', 'padding': '20px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px', 'margin': '10px'}),
-        html.Div(children=[
-            html.P(children='Média do Vencimento Total:', style={'font-weight': 'bold', 'text-align': 'center', 'color': '#FFFFFF', 'font-size': '20px'}),
-            html.P(children=f'R$ {media_vencimento_total:.2f}', style={'font-size': '24px', 'color': '#FF5722', 'text-align': 'center'})
-        ], className='stat-box', style={'width': '30%', 'display': 'inline-block', 'padding': '20px', 'background-color': 'rgba(0, 0, 0, 0.3)', 'border-radius': '10px', 'margin': '10px'}),
-    ], style={'display': 'flex', 'justify-content': 'space-around', 'width': '100%', 'padding': '20px', 'background-color': '#2C3E50', 'border': '1px solid #34495E', 'border-radius': '10px', 'box-shadow': '0 4px 8px 0 rgba(0, 0, 0, 0.2)'})
-], style={'background-color': '#2C3E50', 'padding': '20px', 'border-radius': '10px', 'box-shadow': '0 8px 16px 0 rgba(0, 0, 0, 0.3)'})
+# Exibir os gráficos
+col1, col2 = st.columns(2)
+with col1:
+    st.plotly_chart(fig_pie, use_container_width=True)
+with col2:
+    st.plotly_chart(fig_pyramid, use_container_width=True)
 
-# Executar o servidor
-if __name__ == '__main__':
-    app.run_server(debug=True)
+st.plotly_chart(fig_rmr, use_container_width=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.plotly_chart(fig_initiative_pie, use_container_width=True)
+with col2:
+    st.plotly_chart(fig_convenio_pie, use_container_width=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.plotly_chart(fig_top_5_agentes, use_container_width=True)
+with col2:
+    st.plotly_chart(fig_carga_horaria, use_container_width=True)
+
+# Exibir as estatísticas
+st.markdown("---")
+st.markdown("### Estatísticas")
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric(label="Média das Idades", value=f"{media_idades:.2f} anos")
+with col2:
+    st.metric(label="Média do Tempo em Meses", value=f"{media_tempo_meses:.2f} meses")
+with col3:
+    st.metric(label="Média do Vencimento Total", value=f"R$ {media_vencimento_total:.2f}")
+
+# Rodar o aplicativo
+st.write("Aplicação Streamlit executada com sucesso!")

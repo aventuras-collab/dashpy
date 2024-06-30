@@ -1,21 +1,20 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
+import plotly.express as px
 
-# Carregar dados
-df = pd.read_excel('estagioo.xlsx')
+# Dados simples para o gráfico
+data = {
+    'Fruit': ['Apples', 'Oranges', 'Bananas', 'Grapes'],
+    'Amount': [10, 15, 7, 12]
+}
 
-# Calcular estatísticas
-media_idades = df['IDADE'].mean()
-media_tempo_meses = df['Tempo em meses'].mean()
-media_vencimento_total = df['Total de vencimentos'].mean()
+# Criação do DataFrame
+df = pd.DataFrame(data)
 
-# Visualizações
-fig_pie = px.pie(df, values='Quantidade', names='Gênero', title='Distribuição por Gênero')
+# Criação do gráfico de barras
+fig = px.bar(df, x='Fruit', y='Amount', title='Quantidade de Frutas')
 
 # Layout da aplicação Streamlit
-st.title("Dashboard de Visualização da Tabela de Estágios Não Obrigatórios")
-st.plotly_chart(fig_pie, use_container_width=True)
-st.write(f"Média das Idades: {media_idades:.2f} anos")
-st.write(f"Média do Tempo em Meses: {media_tempo_meses:.2f} meses")
-st.write(f"Média do Vencimento Total: R$ {media_vencimento_total:.2f}")
+st.title('Teste Simples de Streamlit com Plotly')
+st.plotly_chart(fig)
+
+st.write("Aplicação executada com sucesso!")

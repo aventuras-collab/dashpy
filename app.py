@@ -194,6 +194,60 @@ fig_carga_horaria.update_layout(title_x=0.5, font=dict(size=18, family='Arial, s
 # Iniciar a aplicação Streamlit
 st.set_page_config(page_title="Dashpy", layout="wide")
 
+# Ajustar o fundo para uma mescla de azul escuro e preto
+st.markdown(
+    """
+    <style>
+    .css-18e3th9 {
+        background-color: #1a1a2e;
+    }
+    .css-1d391kg {
+        background-color: #1a1a2e;
+    }
+    .css-1v3fvcr {
+        background-color: #16213e;
+    }
+    .css-1offfwp {
+        background-color: #1a1a2e;
+    }
+    .card {
+        background-color: #2a3b4c;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-family: 'Arial, sans-serif';
+        margin-bottom: 20px;
+    }
+    .card-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .card-value {
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .css-1pjc44v {
+        font-family: 'Arial, sans-serif';
+    }
+    .css-hxt7ib {
+        font-family: 'Arial, sans-serif';
+    }
+    h1 {
+        text-align: center;
+        color: white;
+        font-family: 'Arial, sans-serif';
+    }
+    h2 {
+        text-align: center;
+        color: white;
+        font-family: 'Arial, sans-serif';
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("Dashboard de Visualização da Tabela de Estágios Não Obrigatórios")
 
 # Exibir os gráficos
@@ -217,16 +271,29 @@ with col1:
 with col2:
     st.plotly_chart(fig_carga_horaria, use_container_width=True)
 
-# Exibir as estatísticas
+# Exibir as estatísticas em "cards"
 st.markdown("---")
 st.markdown("### Estatísticas")
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric(label="Média das Idades", value=f"{media_idades:.2f} anos")
+    st.markdown("""
+        <div class="card">
+            <div class="card-title">Média das Idades</div>
+            <div class="card-value">{:.2f} anos</div>
+        </div>
+    """.format(media_idades), unsafe_allow_html=True)
 with col2:
-    st.metric(label="Média do Tempo em Meses", value=f"{media_tempo_meses:.2f} meses")
+    st.markdown("""
+        <div class="card">
+            <div class="card-title">Média do Tempo em Meses</div>
+            <div class="card-value">{:.2f} meses</div>
+        </div>
+    """.format(media_tempo_meses), unsafe_allow_html=True)
 with col3:
-    st.metric(label="Média do Vencimento Total", value=f"R$ {media_vencimento_total:.2f}")
+    st.markdown("""
+        <div class="card">
+            <div class="card-title">Média do Vencimento Total</div>
+            <div class="card-value">R$ {:.2f}</div>
+        </div>
+    """.format(media_vencimento_total), unsafe_allow_html=True)
 
-# Rodar o aplicativo
-st.write("Aplicação Streamlit executada com sucesso!")
